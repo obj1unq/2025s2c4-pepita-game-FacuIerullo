@@ -2,6 +2,8 @@ import wollok.game.*
 import pepita.*
 import extras.*
 import direcciones.*
+import comidas.*
+
 
 program pepitaGame {
 	game.title("Pepita") 	//Valor por defecto "Wollok Game"
@@ -14,7 +16,8 @@ program pepitaGame {
 	game.boardGround("fondo2.jpg")
 	game.addVisual(nido)
 	game.addVisual(silvestre)
-
+	game.addVisual(manzana)
+	game.addVisual(alpiste)
 	game.addVisual(pepita)
 
 	keyboard.up().onPressDo( { pepita.mover(arriba) } )
