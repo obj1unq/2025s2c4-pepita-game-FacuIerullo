@@ -31,21 +31,16 @@ object pepita {
 	}
 
 	method comerAca(){
-		try {
 			const comida = self.loQueHayAca()
 			self.comer(comida)
 			comida.eliminar()
-		}
-		catch e1: Exception {
-			self.error("No hay nada para comer acá")
-		}
 	}
 
 	method teAtraparon() {
 		if(self.estaSobre(predador)){
 		self.atrapada(true)
 		game.say(self, "Me atraparon!")
-		self.perder()
+		game.schedule(2000, {self.perder()})
 		}
 	}
 
@@ -66,14 +61,14 @@ object pepita {
 			self.volar(1)
 			position = direccion.siguiente(position)
 		} else if(!self.estaViva()){
-			self.perder()
+			game.schedule(2000, {self.perder()})
 		}
 	}
 
 	method puedeMover(direccion) = direccion.puedeMover(position)  
 	
 	method perder(){
-		game.say(self, "Perdiste, presiona la R para reiniciar")
+		game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 		keyboard.r().onPressDo {
 			game.clear()
 			nivel1.inicializar()
@@ -81,6 +76,11 @@ object pepita {
 		}
 	}
 
+	method gane() {
+		if(self.enHogar()){
+	  game.say(self, "¡GANE!")
+	  game.stop()}
+	}
 
 	method comer(comida) {
 		energia = energia + comida.energiaQueOtorga()

@@ -20,9 +20,9 @@ object nivel1 {
 		keyboard.down().onPressDo { pepita.mover(abajo) }
 		keyboard.left().onPressDo { pepita.mover(izquierda) }
 		keyboard.right().onPressDo { pepita.mover(derecha) }
-		keyboard.c().onPressDo { pepita.comerAca() }
 
 		game.onCollideDo(pepita, {algo => pepita.teAtraparon()})
-        
+		game.onCollideDo(pepita, {algo => pepita.comerAca()})
+        game.onCollideDo(pepita, {algo => game.schedule(2000, {pepita.gane()})})
 	}
 }
