@@ -39,7 +39,7 @@ object pepita {
 	method teAtraparon() {
 		if(self.estaSobre(predador)){
 		self.atrapada(true)
-		game.say(self, "Me atraparon!")
+		game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 		game.schedule(2000, {self.perder()})
 		}
 	}
@@ -61,6 +61,7 @@ object pepita {
 			self.volar(1)
 			position = direccion.siguiente(position)
 		} else if(!self.estaViva()){
+			game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 			game.schedule(2000, {self.perder()})
 		}
 	}
@@ -68,7 +69,6 @@ object pepita {
 	method puedeMover(direccion) = direccion.puedeMover(position)  
 	
 	method perder(){
-		game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 		keyboard.r().onPressDo {
 			game.clear()
 			nivel1.inicializar()
@@ -79,7 +79,7 @@ object pepita {
 	method gane() {
 		if(self.enHogar()){
 	  game.say(self, "¡GANE!")
-	  game.stop()}
+	  game.schedule(2000, {game.stop()})}
 	}
 
 	method comer(comida) {

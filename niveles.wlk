@@ -23,6 +23,6 @@ object nivel1 {
 
 		game.onCollideDo(pepita, {algo => pepita.teAtraparon()})
 		game.onCollideDo(pepita, {algo => pepita.comerAca()})
-        game.onCollideDo(pepita, {algo => game.schedule(2000, {pepita.gane()})})
+        game.onCollideDo(pepita, {algo => pepita.gane()})
 	}
 }
