@@ -49,13 +49,6 @@ object pepita {
 		}
 	}
 
-	method teQuedasteSinEnergia() {
-		if(energia >= self.energiaNecesaria(1)){
-			game.say(self, "Me canse!")
-			self.perder()
-		}
-	}
-
 	method loQueHayAca() = game.uniqueCollider(self)
 
 	method estaViva() =  energia >= self.energiaNecesaria(1) && not self.atrapada() 
@@ -72,7 +65,9 @@ object pepita {
 		if(self.puedeMover(direccion) && self.estaViva()){
 			self.volar(1)
 			position = direccion.siguiente(position)
-		} 
+		} else if(!self.estaViva()){
+			self.perder()
+		}
 	}
 
 	method puedeMover(direccion) = direccion.puedeMover(position)
@@ -102,7 +97,7 @@ object pepita {
 	}
 
 	method caerPorGravedad(){
-		if (self.puedeMover(abajo)) {
+		if (self.puedeMover(abajo) && self.estaViva()) {
 			position = position.down(1)
 		}
 	} 
