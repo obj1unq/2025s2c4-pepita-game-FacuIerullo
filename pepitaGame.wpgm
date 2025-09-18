@@ -3,6 +3,7 @@ import pepita.*
 import extras.*
 import direcciones.*
 import comidas.*
+import niveles.*
 
 
 program pepitaGame {
@@ -14,17 +15,7 @@ program pepitaGame {
 	//Valor por defecto game.ground("ground.png")
 	//game.addVisual(pepita)
 	game.boardGround("fondo2.jpg")
-	game.addVisual(nido)
-	game.addVisual(silvestre)
-	game.addVisual(manzana)
-	game.addVisual(alpiste)
-	game.addVisual(pepita)
-
-	keyboard.up().onPressDo( { pepita.mover(arriba) } )
-	keyboard.down().onPressDo( { pepita.mover(abajo) } )
-	keyboard.left().onPressDo( { pepita.mover(izquierda) } )
-	keyboard.right().onPressDo( { pepita.mover(derecha) } )
-	keyboard.c().onPressDo( { pepita.comerAca() } )
+	nivel1.inicializar()	
 
 	game.start()
 }

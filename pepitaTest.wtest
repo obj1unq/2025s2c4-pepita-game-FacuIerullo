@@ -24,6 +24,29 @@ describe "Tests de Pepita" {
 		assert.equals(91, pepita.energia())
 	}
 
+	test "Inicialmente puede moverse" {
+		assert.that(pepita.estaViva())
+		assert.notThat(pepita.atrapada())
+		assert.equals("base", pepita.estado())
+	}
+
+	test "Se queda sin energia no puede moverse, pero no está atrapada" {
+		pepita.volar(11)
+
+		assert.equals(1, pepita.energia())
+		assert.notThat(pepita.estaViva())
+		assert.notThat(pepita.atrapada())
+		assert.equals("gris", pepita.estado())
+	}
+	
+	test "Si la atrapan no puede moverse" {
+		pepita.teAtraparon()
+
+		assert.that(pepita.atrapada())
+		assert.notThat(pepita.estaViva())
+		assert.equals("gris", pepita.estado())
+	}
+
 	test "Pepita al comer manzana sube energia y desaparece manzana"{
 		game.addVisual(manzana)
 		pepita.position(manzana.position())
@@ -31,6 +54,18 @@ describe "Tests de Pepita" {
 		pepita.comerAca()
 		assert.equals(105, pepita.energia())
 		assert.notThat(game.hasVisual(manzana))
+	}
+
+	test "Trato de comer donde no hay manzana"{
+		game.addVisual(manzana)
+
+ 		assert.throwsExceptionWithMessage(
+    	"No hay nada para comer acá",
+    	{ pepita.comerAca() }
+  	)
+
+		assert.equals(100, pepita.energia())
+		assert.that(game.hasVisual(manzana))
 	}
 
 	test "Pepita al volar 2 km, queda con energia 82"{

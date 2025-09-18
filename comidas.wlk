@@ -31,7 +31,7 @@ object alpiste {
 		return 20
 	} 
 
-	method andate(){
+	method eliminar(){
 		game.removeVisual(self)
 	}
 }

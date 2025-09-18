@@ -1,54 +1,89 @@
+import direcciones.*
 import extras.*
+import comidas.*
+import niveles.*
 import wollok.game.*
 
-
 object pepita {
-	var energia = 100
-	var property position = game.at(0,1)
+	const energiaInicial = 100
+	const posicionInicial = game.at(0,1)
 	const predador = silvestre
 	const hogar = nido
 	const joules = 9
+
+	var property position = posicionInicial
+	var energia = energiaInicial
+	var property atrapada = false
+
+	method inicializar() {
+		position = game.at(0,1)
+		energia = energiaInicial
+		atrapada = false
+	}
 	
 	method image() = "pepita-" + self.estado() + ".png"
 
 
 	method estado(){
-		return if (self.esAtrapada() || !self.puedeMover()){"gris"}
-		       else if(self.enHogar()){"grande"}
-			   else {"base"}
+		return if (!self.estaViva()) { "gris" }
+		  else if (self.enHogar()) { "grande"  }
+			else { "base" }
 	}
 
 	method comerAca(){
-		const comida = self.loQueHayAca()
-		self.comer(comida)
-		comida.eliminar()
+		try {
+			const comida = self.loQueHayAca()
+			self.comer(comida)
+			comida.eliminar()
+		}
+		catch e1: Exception {
+			self.error("No hay nada para comer acá")
+		}
 	}
+
+	method teAtraparon() {
+		if(self.estaSobre(predador)){
+		self.atrapada(true)
+		game.say(self, "Me atraparon!")
+		self.perder()
+		}
+	}
+
+	method teQuedasteSinEnergia() {
+		if(energia >= self.energiaNecesaria(1)){
+			game.say(self, "Me canse!")
+			self.perder()
+		}
+	}
+
 	method loQueHayAca() = game.uniqueCollider(self)
 
-	method puedeMover() = energia >= self.energiaNecesaria(1) && not self.esAtrapada()
-
-	method esAtrapada() = self.estaSobre(predador)
+	method estaViva() =  energia >= self.energiaNecesaria(1) && not self.atrapada() 
 
 	method enHogar() = self.estaSobre(hogar)
 
-	method estaSobre(alguien) = self.position() == alguien.position()
+	method estaSobre(alguien) = position == alguien.position()
 
 	method text() = "Energia: \n" + energia
 
 	method textColor() = "FF0000"
 
 	method mover(direccion){
-		if(self.puedeMover()){
+		if(self.puedeMover(direccion) && self.estaViva()){
 			self.volar(1)
 			position = direccion.siguiente(position)
-		} else {
-			self.perder()
-		}
+		} 
 	}
 
+	method puedeMover(direccion) = direccion.puedeMover(position)
+	
 	method perder(){
-		game.say(self, "Perdí!")
-		game.schedule( 2000, { game.stop() })
+		game.say(self, "Perdiste, presiona la R para reiniciar")
+		keyboard.r().onPressDo {
+			game.clear()
+			nivel1.inicializar()
+			self.inicializar()
+		}
 	}
 
 
@@ -66,10 +101,10 @@ object pepita {
 		return energia
 	}
 
-	method redibujarse(){
-	  game.removeVisual(self)
-	  game.addVisual(self)
-	}
-
+	method caerPorGravedad(){
+		if (self.puedeMover(abajo)) {
+			position = position.down(1)
+		}
+	} 
 }
 
