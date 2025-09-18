@@ -19,4 +19,21 @@ object silvestre{
     method x() = 3.max(presa.position().x()) 
 }
 
+object muro1 {
+  method image() = "muro.png"
 
+  method position() = game.at(2, 3)
+
+}
+
+object muro2 {
+  method image() = "muro.png"
+
+  method position() = game.at(7, 4)
+}
+
+object muro3 {
+  method image() = "muro.png"
+
+  method position() = game.at(8, 7)
+}

@@ -10,9 +10,12 @@ object nivel1 {
 		game.addVisual(silvestre)
 		game.addVisual(alpiste)
 		game.addVisual(manzana)
+		game.addVisual(muro1)
+		game.addVisual(muro2)
+		game.addVisual(muro3)
 
 		game.addVisual(pepita)
-        game.onTick(800, "gravedad", { pepita.caerPorGravedad() })
+        //game.onTick(800, "gravedad", { pepita.caerPorGravedad() })
 		keyboard.up().onPressDo { pepita.mover(arriba) }
 		keyboard.down().onPressDo { pepita.mover(abajo) }
 		keyboard.left().onPressDo { pepita.mover(izquierda) }

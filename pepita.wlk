@@ -70,7 +70,7 @@ object pepita {
 		}
 	}
 
-	method puedeMover(direccion) = direccion.puedeMover(position)
+	method puedeMover(direccion) = direccion.puedeMover(position)  
 	
 	method perder(){
 		game.say(self, "Perdiste, presiona la R para reiniciar")
