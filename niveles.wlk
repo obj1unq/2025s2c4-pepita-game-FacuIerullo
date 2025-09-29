@@ -6,23 +6,22 @@ import wollok.game.*
 
 object nivel1 {
 	method inicializar() {
-		game.addVisual(nido)
-		game.addVisual(silvestre)
-		game.addVisual(alpiste)
-		game.addVisual(manzana)
-		game.addVisual(muro1)
-		game.addVisual(muro2)
-		game.addVisual(muro3)
+		const personajes = [ nido, silvestre, alpiste, 
+		new Manzana(position = game.at(4,4)),
+		new Manzana(position = game.at(6,6), madurez = 10),
+		pepita]
+		
+		personajes.forEach { el => game.addVisual(el) }
 
-		game.addVisual(pepita)
+		const muros = (3..7).map { y => new Muro(position = game.at(3, y)) }
+		muros.forEach { muro => game.addVisual(muro) }
         //game.onTick(800, "gravedad", { pepita.caerPorGravedad() })
 		keyboard.up().onPressDo { pepita.mover(arriba) }
 		keyboard.down().onPressDo { pepita.mover(abajo) }
 		keyboard.left().onPressDo { pepita.mover(izquierda) }
 		keyboard.right().onPressDo { pepita.mover(derecha) }
 
-		game.onCollideDo(pepita, {algo => pepita.teAtraparon()})
-		game.onCollideDo(pepita, {algo => pepita.comerAca()})
-        game.onCollideDo(pepita, {algo => pepita.gane()})
+		game.onCollideDo(pepita, {algo => pepita.encontrasteAlgo(algo)})
+		
 	}
 }

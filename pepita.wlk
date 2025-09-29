@@ -7,13 +7,13 @@ import wollok.game.*
 object pepita {
 	const energiaInicial = 100
 	const posicionInicial = game.at(0,1)
-	const predador = silvestre
 	const hogar = nido
 	const joules = 9
 
 	var property position = posicionInicial
 	var energia = energiaInicial
 	var property atrapada = false
+	var ultimaDireccion = null
 
 	method inicializar() {
 		position = game.at(0,1)
@@ -25,28 +25,25 @@ object pepita {
 
 
 	method estado(){
-		return if (!self.estaViva()) { "gris" }
+		return if (!self.puedeMover()) { "gris" }
 		  else if (self.enHogar()) { "grande"  }
 			else { "base" }
 	}
 
-	method comerAca(){
-			const comida = self.loQueHayAca()
+	method comerAca(comida){
 			self.comer(comida)
 			comida.eliminar()
 	}
 
 	method teAtraparon() {
-		if(self.estaSobre(predador)){
 		self.atrapada(true)
 		game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 		game.schedule(2000, {self.perder()})
-		}
 	}
 
-	method loQueHayAca() = game.uniqueCollider(self)
-
-	method estaViva() =  energia >= self.energiaNecesaria(1) && not self.atrapada() 
+	method encontrasteAlgo(objeto) {
+		objeto.accion(self)
+	}
 
 	method enHogar() = self.estaSobre(hogar)
 
@@ -57,17 +54,27 @@ object pepita {
 	method textColor() = "FF0000"
 
 	method mover(direccion){
-		if(self.puedeMover(direccion) && self.estaViva()){
+		if(self.puedeMover() && self.limites(direccion)){
 			self.volar(1)
 			position = direccion.siguiente(position)
-		} else if(!self.estaViva()){
+			ultimaDireccion = direccion
+		} else if(!self.puedeMover()){
 			game.say(self, "¡PERDÍ! presiona la R para reiniciar")
 			game.schedule(2000, {self.perder()})
 		}
 	}
 
-	method puedeMover(direccion) = direccion.puedeMover(position)  
-	
+	method puedeMover() = energia >= self.energiaNecesaria(1) && not self.atrapada()
+
+	method limites(direccion) = direccion.siguiente(position).y() < game.height() && 
+	direccion.siguiente(position).y() >= 0 &&
+	direccion.siguiente(position).x() < game.width() &&
+	direccion.siguiente(position).x() >= 0
+
+	method retroceder() {
+		position = ultimaDireccion.anterior(position)
+	} 
+
 	method perder(){
 		keyboard.r().onPressDo {
 			game.clear()
@@ -77,10 +84,8 @@ object pepita {
 	}
 
 	method gane() {
-		if(self.enHogar()){
 	  game.say(self, "¡GANE!")
 	  game.schedule(2000, {game.stop()})}
-	}
 
 	method comer(comida) {
 		energia = energia + comida.energiaQueOtorga()
@@ -97,7 +102,7 @@ object pepita {
 	}
 
 	method caerPorGravedad(){
-		if (self.puedeMover(abajo) && self.estaViva()) {
+		if (self.puedeMover()) {
 			position = position.down(1)
 		}
 	} 

@@ -7,6 +7,10 @@ object nido{
 
     method image() = "nido.png"
 
+    method accion(alguien) {
+      alguien.gane()
+    } 
+
 }
 
 object silvestre{
@@ -17,23 +21,19 @@ object silvestre{
     method position() = game.at(self.x(), 0)
 
     method x() = 3.max(presa.position().x()) 
+
+    method accion(alguien){
+      alguien.teAtraparon()
+    }
 }
 
-object muro1 {
+class Muro{
+  var property position
+
   method image() = "muro.png"
 
-  method position() = game.at(2, 3)
+  method accion(alguien) {
+    alguien.retroceder()
+  }
 
-}
-
-object muro2 {
-  method image() = "muro.png"
-
-  method position() = game.at(7, 4)
-}
-
-object muro3 {
-  method image() = "muro.png"
-
-  method position() = game.at(8, 7)
 }

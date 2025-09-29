@@ -1,9 +1,10 @@
+import pepita.*
 import wollok.game.*
 
-object manzana {
+class Manzana {
 	const base= 5
 	var madurez = 1
-	var property position = game.at(4,4)
+	var property position 
 
 	method image() = "manzana.png"
 	
@@ -15,6 +16,9 @@ object manzana {
 		game.removeVisual(self)
 	}
 	
+	method accion(alguien){
+		alguien.comerAca(self)
+	}
 	method madurar() {
 		madurez = madurez + 1
 		//madurez += 1
@@ -33,6 +37,9 @@ object alpiste {
 
 	method eliminar(){
 		game.removeVisual(self)
+	}
+	method accion(alguien){
+		alguien.comerAca(self)
 	}
 }
 
